@@ -1,0 +1,15 @@
+{
+  "name": "blockchain.js",
+  "version": "0.0.1",
+  "description": "An experimental javascript blockchain implementation.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "patrick.triest@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "immutable": "3.8.2",
+    "sjcl": "1.0.7"
+  }
+}
