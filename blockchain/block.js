@@ -9,6 +9,8 @@ class Block {
     this.transaction = transaction
     this.nonce = 0
     this.hash = this.getHash()
+    this.difficulty = 0
+    this.miner = null
   }
 
   /** Compute a sha256 hash string value for the block */
