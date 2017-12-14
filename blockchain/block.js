@@ -1,14 +1,7 @@
 const sjcl = require('sjcl/core.js')
 
 class Block {
-  /**
-   * Create a new block
-   * @param { number } index Incremental index of the block
-   * @param { string } previousHash Hash value of previous block
-   * @param { string } recipient Public key of transaction recipient
-   * @param { string } sender Public key of transaction sender
-   * @param { number } amount The amount being sent
-   */
+  /** Create a new block */
   constructor (index, previousHash, transaction) {
     this.index = index
     this.previousHash = previousHash
@@ -26,13 +19,14 @@ class Block {
 
   /** Mine the block (by incrementing the nonce) to acheive a hash value with the required prefix */
   mine (difficulty, miner) {
-    const solutionPrefix = new Array(difficulty).fill('0').join('')
+    this.difficulty = difficulty
     this.miner = miner
+    const solutionPrefix = new Array(this.difficulty).fill('0').join('')
+
     do {
       this.nonce++
       this.hash = this.getHash(miner)
     } while (this.hash.slice(0, solutionPrefix.length) !== solutionPrefix)
-    console.log(this.hash)
   }
 }
 
