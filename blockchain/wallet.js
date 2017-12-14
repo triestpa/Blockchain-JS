@@ -21,21 +21,6 @@ class Wallet {
     // Serialize the signature to a string
     return sjcl.codec.hex.fromBits(signature)
   }
-
-  /** Verify the validity of a block signature */
-  static verifySignature (publicKey, signature, hash) {
-    // De-serialize the public key
-    publicKey = new sjcl.ecc.ecdsa.publicKey(
-      sjcl.ecc.curves.k256,
-      sjcl.codec.base64.toBits(publicKey)
-    )
-
-    // De-serialize the signature
-    signature = sjcl.codec.hex.toBits(signature)
-
-    // Verify that the block hash was signed with the specified key
-    publicKey.verify(hash, signature)
-  }
 }
 
 module.exports = Wallet

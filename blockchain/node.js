@@ -1,6 +1,7 @@
 const Wallet = require('./wallet')
 const Transaction = require('./transaction')
 const Blockchain = require('./blockchain')
+const util = require('./util')
 
 class BlockChainNode {
   /** Initialize a new blockchain node */
@@ -22,6 +23,8 @@ class BlockChainNode {
       if (this.getBlocks().first().getHash() !== blocks.first().getHash()) {
         throw new Error('Genesis Block Does Not Match')
       }
+
+      util.validateChain(blocks)
 
       this.blockchain = new Blockchain(blocks, this.difficulty)
     }
@@ -46,7 +49,7 @@ class BlockChainNode {
   getBlocks () { return this.blockchain.blocks }
 
   /** Get the balance for the current wallet */
-  getBalance () { return this.blockchain.getBalance(this.wallet.publicKey) }
+  getBalance () { return util.getBalance(this.wallet.publicKey, this.getBlocks()) }
 }
 
 module.exports = BlockChainNode
