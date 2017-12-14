@@ -7,11 +7,9 @@ class Wallet {
     this.publicKey = this.getPublicKey()
   }
 
-  /** Retrieve the public key from wallet keypair */
+  /** Serialize the public key to a string */
   getPublicKey () {
     const publicKey = this.keypair.pub.get()
-
-    // Serialize the public key to a string
     return sjcl.codec.base64.fromBits(publicKey.x.concat(publicKey.y))
   }
 
@@ -35,7 +33,7 @@ class Wallet {
     // De-serialize the signature
     signature = sjcl.codec.hex.toBits(signature)
 
-    // Verify that the block hash was signed with the specified keypair
+    // Verify that the block hash was signed with the specified key
     publicKey.verify(hash, signature)
   }
 }
