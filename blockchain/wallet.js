@@ -15,10 +15,10 @@ class Wallet {
     return sjcl.codec.base64.fromBits(publicKey.x.concat(publicKey.y))
   }
 
-  /** Generate signature for provided block using private key */
-  generateSignature (block) {
-    // Generate a block signature using the block hash and the wallet's private key
-    let signature = this.keypair.sec.sign(block.hash)
+  /** Generate signature for provided transaction using private key */
+  generateSignature (transaction) {
+    // Generate a transaction signature using the transaction hash and the wallet's private key
+    let signature = this.keypair.sec.sign(transaction.hash)
 
     // Serialize the signature to a string
     return sjcl.codec.hex.fromBits(signature)
