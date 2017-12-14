@@ -1,7 +1,8 @@
 const Wallet = require('./wallet')
 const Transaction = require('./transaction')
 const Blockchain = require('./blockchain')
-const util = require('./util')
+const balance = require('./balance')
+const validation = require('./validation')
 
 class BlockChainNode {
   /** Initialize a new blockchain node */
@@ -14,7 +15,7 @@ class BlockChainNode {
 
   /** Replace current blockchain with new one, if sum difficulty is higher in new chain. */
   sync (blocks) {
-    // Calculate Total Difficultly Of Each Chain
+    // Calculate total difficultly of each chain
     const currentDifficultySum = this.getBlocks().reduce((prev, current) => prev + current.difficulty, 0)
     const newDifficultySum = blocks.reduce((prev, current) => prev + current.difficulty, 0)
 
@@ -24,7 +25,7 @@ class BlockChainNode {
         throw new Error('Genesis Block Does Not Match')
       }
 
-      util.validateChain(blocks)
+      validation.validateChain(blocks)
 
       this.blockchain = new Blockchain(blocks, this.difficulty)
     }
@@ -49,7 +50,7 @@ class BlockChainNode {
   getBlocks () { return this.blockchain.blocks }
 
   /** Get the balance for the current wallet */
-  getBalance () { return util.getBalance(this.wallet.publicKey, this.getBlocks()) }
+  getBalance () { return balance.getBalance(this.wallet.publicKey, this.getBlocks()) }
 }
 
 module.exports = BlockChainNode

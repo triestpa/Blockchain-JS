@@ -22,20 +22,20 @@ console.log('Verifying Debited Balance on Wallet 0')
 balanceNode0 = node0.getBalance()
 assert.equal(balanceNode0, (12 * difficulty) - (10 + 8))
 
-console.log('Syncing Transactions To Wallet 1')
+console.log('Syncing Transactions To Node 1')
 node1.sync(node0.getBlocks())
 
-console.log('Verifying Wallet 1 Balance of 3 Coins')
+console.log('Verifying Wallet 1 Balance of 18 Coins')
 let balanceNode1 = node1.getBalance()
 assert.equal(balanceNode1, (10 + 8))
 
-console.log('Verifying That Node0 and Node1 Contain Identical Blockchains.')
+console.log('Verifying That Node 0 and Node 1 Contain Identical Blockchains.')
 assert.deepEqual(node1.blockchain, node0.blockchain)
 
-console.log('Making Payment From Node1 To Node0.')
+console.log('Making Payment From Node 1 To Node 0.')
 node1.pay(node0.wallet.publicKey, 1)
 
-console.log('Syning Transaction To Node0.')
+console.log('Syning Transaction To Node 0.')
 node0.sync(node1.getBlocks())
 
 console.log('Verifying New Balances For Wallet 0 and Wallet 1.')
