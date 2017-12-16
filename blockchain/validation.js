@@ -2,7 +2,7 @@ const sjcl = require('sjcl/core.js')
 const immutable = require('immutable')
 const balance = require('./balance')
 
-/** Determine the current chain is valid */
+/** Throw an error if blockchain is invalid */
 function validateChain (blocks) {
   // Intialize a new chain with just the genesis block
   const tmpChain = immutable.List([ blocks.first() ])
@@ -18,7 +18,7 @@ function validateChain (blocks) {
   if (invalidBalances.length > 0) { throw new Error('Negative Balance Detected') }
 }
 
-/** Determine if a new block is valid */
+/** Throw an error if block is invalid */
 function validateNewBlock (block, currentBlocks, minimumDifficulty = 2) {
   const previousBlock = currentBlocks.last()
   const blockHash = block.getHash()
@@ -40,18 +40,18 @@ function validateNewBlock (block, currentBlocks, minimumDifficulty = 2) {
   validateTransaction(block.transaction, currentBlocks)
 }
 
-/** Determine the validity of a transaction */
+/** Throw an error if transaction is invalid */
 function validateTransaction (transaction, currentBlocks) {
   // Sender must have available balance for transaction
   const walletBalance = balance.getBalance(transaction.sender, currentBlocks) - transaction.amount
   if (walletBalance < 0) { throw new Error(`Insufficient Balance - ${transaction.sender}, ${walletBalance}`) }
 
-  try { // Signature must be valid
+  try { // Signature and hash must be valid
     validateSignature(transaction.sender, transaction.signature, transaction.getHash())
   } catch (err) { throw new Error('Invalid Signature') }
 }
 
-/** Verify the validity of a block signature */
+/** Throw an error if transaction signature is invalid */
 function validateSignature (publicKey, signature, hash) {
   // De-serialize the public key
   publicKey = new sjcl.ecc.ecdsa.publicKey(

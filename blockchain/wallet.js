@@ -14,9 +14,9 @@ class Wallet {
   }
 
   /** Generate signature for provided transaction using private key */
-  generateSignature (transaction) {
+  generateSignature (transactionHash) {
     // Generate a transaction signature using the transaction hash and the wallet's private key
-    let signature = this.keypair.sec.sign(transaction.hash)
+    let signature = this.keypair.sec.sign(transactionHash)
 
     // Serialize the signature to a string
     return sjcl.codec.hex.fromBits(signature)

@@ -23,12 +23,13 @@ class Block {
   mine (difficulty, miner) {
     this.difficulty = difficulty
     this.miner = miner
-    const solutionPrefix = new Array(this.difficulty).fill('0').join('')
 
-    do {
+    const solutionPrefix = new Array(this.difficulty).fill('0').join('')
+    while (this.getHash().slice(0, solutionPrefix.length) !== solutionPrefix) {
       this.nonce++
-      this.hash = this.getHash(miner)
-    } while (this.hash.slice(0, solutionPrefix.length) !== solutionPrefix)
+    }
+
+    this.hash = this.getHash()
   }
 }
 

@@ -8,7 +8,7 @@ const node0 = new BlockChainNode(null, difficulty)
 const node1 = new BlockChainNode(null, difficulty, node0.getBlocks())
 
 console.log('Mining Node0/Wallet0 For Initial Balance of 30 Coins')
-node0.mine(10)
+node0.generateCoins(30)
 
 console.log('Verifying Wallet 0 Balance of 30 Coins')
 let balanceNode0 = node0.getBalance()
@@ -20,7 +20,7 @@ node0.pay(node1.wallet.publicKey, 8)
 
 console.log('Verifying Debited Balance on Wallet 0')
 balanceNode0 = node0.getBalance()
-assert.equal(balanceNode0, (12 * difficulty) - (10 + 8))
+assert.equal(balanceNode0, 30 + (2 * difficulty) - (10 + 8))
 
 console.log('Syncing Transactions To Node 1')
 node1.sync(node0.getBlocks())
@@ -39,7 +39,7 @@ console.log('Syning Transaction To Node 0.')
 node0.sync(node1.getBlocks())
 
 console.log('Verifying New Balances For Wallet 0 and Wallet 1.')
-assert.equal(node0.getBalance(), (12 * difficulty) - (10 + 8) + 1)
+assert.equal(node0.getBalance(), 30 + (2 * difficulty) - (10 + 8) + 1)
 assert.equal(node1.getBalance(), (10 + 8) + (1 * difficulty) - 1)
 
 console.log('Verifying That Node0 and Node1 Contain Identical Blockchains.')

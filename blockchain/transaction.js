@@ -13,13 +13,13 @@ class Transaction {
 
   /** Compute a sha256 hash string value for the transaction */
   getHash () {
-    const hash = sjcl.hash.sha256.hash(this.timestamp + this.recipient + this.sender + this.amount)
+    const hash = sjcl.hash.sha256.hash(this.timestamp + this.sender + this.recipient + this.amount)
     return sjcl.codec.hex.fromBits(hash).toString()
   }
 
   /** Assign ECDSA signature to transaction.  Must be signed with private key of sender. */
-  sign (signature) {
-    this.signature = signature
+  sign (wallet) {
+    this.signature = wallet.generateSignature(this.hash)
   }
 }
 

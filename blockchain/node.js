@@ -15,6 +15,9 @@ class BlockChainNode {
 
   /** Replace current blockchain with new one, if sum difficulty is higher in new chain. */
   sync (blocks) {
+    // Check if the incoming blockchain is valid
+    validation.validateChain(blocks)
+
     // Calculate total difficultly of each chain
     const currentDifficultySum = this.getBlocks().reduce((prev, current) => prev + current.difficulty, 0)
     const newDifficultySum = blocks.reduce((prev, current) => prev + current.difficulty, 0)
@@ -25,24 +28,24 @@ class BlockChainNode {
         throw new Error('Genesis Block Does Not Match')
       }
 
-      validation.validateChain(blocks)
-
       this.blockchain = new Blockchain(blocks, this.difficulty)
     }
   }
 
-  /** Shortcut to generate coins for wallet, by mining a bunch of zero-payment blocks to self */
-  mine (amount) {
-    for (let i = 0; i < amount; i++) {
+  /** Generate coins for wallet, by mining a bunch of zero-payment blocks to self */
+  generateCoins (amount) {
+    const iterations = Math.ceil(amount / this.difficulty)
+    for (let i = 0; i < iterations; i++) {
       this.pay(this.wallet.publicKey, 0)
     }
+
+    return iterations
   }
 
   /** Pay a recipient with the current wallet */
   pay (recipient, amount) {
     const transaction = new Transaction(this.wallet.publicKey, recipient, amount)
-    const signature = this.wallet.generateSignature(transaction)
-    transaction.sign(signature)
+    transaction.sign(this.wallet)
     this.blockchain.addBlock(transaction, this.wallet.publicKey)
   }
 

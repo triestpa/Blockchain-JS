@@ -1,6 +1,5 @@
 const immutable = require('immutable')
 const Block = require('./block')
-const Wallet = require('./wallet')
 const Transaction = require('./transaction')
 
 class Blockchain {
